@@ -1,15 +1,21 @@
-<div class="row">
-    <div class="col-sm-6 col-md-4">
-        <div class="thumbnail">
-            <img class="img-responsive" src="http://www.thumbnailtemplates.com/images/thumbs/thumb-072-cod-black-ops-3-multiplayer-2.jpg" alt="Call Of Duty">
-            <div class="caption">
-                <h3>Call of Duty</h3>
-                <p class="description">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
-                <div class="clearfix">
-                    <div class="price pull-left">$11</div>
-                    <a href="#" class="btn btn-success pull-right" role="button">View Product</a>
+{{# each products }}
+    <div class="row">
+        {{# each this }} 
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img class="img-responsive" src="{{ this.imagePath }}">
+                    <div class="caption">
+                        <h3>{{ this.title }}</h3>
+                        <p class="description">{{ this.description }}</p>
+                        <div class="clearfix">
+                            <div class="price pull-left">{{ this.price }}</div>
+                            <a href="#" class="btn btn-success pull-right" role="button">View Product</a>
+                        </div>
+                  </div>
                 </div>
-          </div>
-        </div>
+            </div>
+        {{/each }}
     </div>
-</div>
+{{/each }}
+
+    
