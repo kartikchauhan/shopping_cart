@@ -18,7 +18,7 @@ passport.use('local.signup', new localStrategy({
 	passReqToCallback: true
 }, function(req, email, password, done) {
 	req.checkBody('email', 'Invalid Email').notEmpty().isEmail();
-	req.checkBody('password', 'Invalid password').notEmpty().isLength({min:4});
+	req.checkBody('password', 'Invalid password').notEmpty().isLength({min: 4});
 	var errors = req.validationErrors();
 	if(errors)
 	{
@@ -41,5 +41,32 @@ passport.use('local.signup', new localStrategy({
 				return done(err);
 			return done(null, newUser);
 		});
+	});
+}));
+
+passport.use('local.signin', new localStrategy({
+	usernameField: 'email',
+	passwordField: 'password',
+	passReqToCallback: true
+}, function(req, email, password, done) {
+	req.checkBody('email', 'Invalid Email').notEmpty().isEmail();
+	req.checkBody('password', 'Invalid password').notEmpty();
+	var errors = req.validationErrors();
+	if(errors)
+	{
+		var messages = [];
+		errors.forEach(function(error) {
+			messages.push(error.msg);
+		});
+		return done(null, false, req.flash('error', messages));
+	}
+	User.findOne({'email': email}, function(err, user) {
+		if(err)
+			return done(err);
+		if(!user)
+			return done(null, false, {message: 'User doesn\'t exists'});
+		if(!user.validPassword(password))	// why user and not User, after all we're using User's method validPassword
+			return done(null, false, {message: 'Wrong password'});
+		return done(null, user);
 	});
 }));
