@@ -1,7 +1,7 @@
 var Product = require('../models/product');
 var mongoose = require('mongoose');
 var assert = require('assert');
-mongoose.connect('localhost:27017/shopping_cart');
+mongoose.connect('localhost:27017/shopping');
 
 var products = [
 	new Product({
