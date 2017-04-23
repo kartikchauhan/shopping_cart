@@ -1,3 +1,11 @@
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div id="success" class="alert alert-success {{#if noMsg }}hidden {{/if }}">
+            {{ successMsg }}
+        </div>
+    </div>
+</div>
+
 {{# each products }}
     <div class="row">
         {{# each this }} 
