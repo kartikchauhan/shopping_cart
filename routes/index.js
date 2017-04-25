@@ -5,6 +5,7 @@ var passport = require('passport');
 
 var Product = require('../models/product');
 var Cart = require('../models/cart');
+var Order = require('../models/order');
 
 router.get('/', function(req, res, next) {
 
@@ -71,13 +72,27 @@ router.post('/checkout', function(req, res, next) {
 	  	source: req.body.stripeToken, // obtained with Stripe.js
 	  	description: "Test customer charging"
 	}, function(err, charge) {
+		var order = new Order({
+			user: req.user,
+			cart: req.session.cart,
+			name: req.body.name,
+			address: req.body.address,
+			paymentId: charge.id
+		});
+		order.save(function(err, result) {
+			if(err)
+			{
+				req.flash('error', err.message);
+	  			return res.redirect('/checkout');
+			}
+		});
 	  	if(err)
 	  	{
 	  		req.flash('error', err.message);
 	  		return res.redirect('/checkout');
 	  	}
 	  	req.flash('success', 'Payment Successful');
-	  	req.cart = null;
+	  	req.session.cart = null;
 	  	res.redirect('/');
 	});
 });
